@@ -15,7 +15,7 @@ class App extends React.Component<any, any>{
             <Layouts>
               {routers.map((r, key) => (
                 <Route
-                  // component={r.component}
+                  component={r.component}
                   exact={!!r.exact}
                   key={key}
                   path={r.path}
