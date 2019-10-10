@@ -16,14 +16,14 @@ const { Header } = Layout;
 class GlobalHeader extends React.Component<any, any> {
     constructor(props) {
         super(props);
-        this.state = {      
+        this.state = {
             menuCurrent: '',
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState({
-            menuCurrent: '/',
+            menuCurrent: this.props.location.pathname
         });
     }
 
