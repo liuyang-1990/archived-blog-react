@@ -1,8 +1,16 @@
 import React from 'react';
 import { Layout, BackTop, Icon } from 'antd';
-import './style.less';
 import GlobalHeader from '../components/GlobalHeader';
-const { Content, Footer, Sider } = Layout;
+import GlobalFooter from '../components/GlobalFooter';
+import SiderRight from '../components/GlobalSider';
+import './style.less';
+const { Content, Sider } = Layout;
+
+const copyright =
+    <React.Fragment>
+        Copyright <Icon type="copyright" /> 2019 created by liuyang | Powered by .Net Core 2.2 on Linux
+    </React.Fragment>
+
 
 class Layouts extends React.Component<any, any> {
 
@@ -15,12 +23,12 @@ class Layouts extends React.Component<any, any> {
                         <Content style={{ padding: '0 24px 0 0', minHeight: 280 }}>
                             {this.props.children}
                         </Content>
-                        <Sider width={350} style={{ background: '#fff' }}>Sider</Sider>
+                        <Sider width={350} style={{ background: '#fff' }}>
+                            <SiderRight />
+                        </Sider>
                     </Layout>
                 </Layout>
-                <Footer style={{ textAlign: 'center', background: '#fff' }}>
-                    Copyright <Icon type="copyright" /> 2019 created by liuyang | Powered by .Net Core 2.2 on Linux
-               </Footer>
+                <GlobalFooter copyright={copyright} />
                 <BackTop />
             </div>
 
