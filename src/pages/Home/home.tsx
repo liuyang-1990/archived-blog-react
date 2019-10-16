@@ -1,18 +1,14 @@
 import React from 'react';
 import { List, Icon } from 'antd';
+import { observer } from 'mobx-react';
+import ArticleState from '../../states/article.state';
+import { TYPES } from '../../utils/types';
+import { myContainer } from '../../config/inversify.config';
+import { ArticleInfo } from '../../models/GridParams';
+import { toLocaleTimeString } from '../../utils/utils';
+import settings from '../../config/settings.config';
 
-const listData: any = [];
-for (let i = 0; i < 23; i++) {
-    listData.push({
-        href: `/detail/${i}`,
-        title: `ant design part ${i}`,
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        description:
-            'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-    });
-}
+
 
 const IconText = ({ type, text }) => (
     <span>
@@ -21,29 +17,40 @@ const IconText = ({ type, text }) => (
     </span>
 );
 
+@observer
 class Home extends React.Component<any, any>{
+
+    private store: ArticleState = myContainer.get<ArticleState>(TYPES.ArticleState);
+
+    componentDidMount() {
+        this.store.queryArticlesByPage({ PageNum: 1, PageSize: settings.pageSize });
+    }
+
+    onChange = page => {
+        this.store.queryArticlesByPage({ PageNum: page, PageSize: settings.pageSize });
+    }
+
 
     render() {
 
         return (
-            <List
+            <List<ArticleInfo>
                 itemLayout="vertical"
                 size="large"
                 pagination={{
-                    onChange: page => {
-                        console.log(page);
-                    },
-                    pageSize: 10,
+                    total: this.store.articleList.TotalRows,
+                    onChange: this.onChange,
+                    pageSize: settings.pageSize,
                 }}
-                dataSource={listData}
-                renderItem={(item: any) => (
+                dataSource={this.store.articleList.Rows}
+                renderItem={(item: ArticleInfo) => (
                     <List.Item
-                        key={item.title}
+                        key={item.Title}
                         actions={[
-                            <IconText type="eye" text="156" key="list-vertical-star-o" />,
-                            <IconText type="like-o" text="156" key="list-vertical-like-o" />,
-                            <IconText type="message" text="2" key="list-vertical-message" />,
-                            <span>2019-10-10</span>
+                            <IconText type="eye" text={item.Views} key="list-vertical-star-o" />,
+                            <IconText type="like-o" text={item.Likes} key="list-vertical-like-o" />,
+                            <IconText type="message" text={item.Comments} key="list-vertical-message" />,
+                            <span>{toLocaleTimeString(item.CreateTime)}</span>
                         ]}
                         extra={
                             <img
@@ -54,12 +61,12 @@ class Home extends React.Component<any, any>{
                         }
                     >
                         <List.Item.Meta
-                            title={<a style={{ fontSize: 18, fontWeight: 700 }} href={item.href}>{item.title}</a>}
+                            title={<a style={{ fontSize: 18, fontWeight: 700 }} href={`/detail/${item.Id}`}>{item.Title}</a>}
                         />
-                        {item.content}
+                        {item.Abstract}
                     </List.Item>
                 )}
-            />)
+            />);
     }
 }
 
