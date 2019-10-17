@@ -14,6 +14,12 @@ const copyright =
 
 class Layouts extends React.Component<any, any> {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            isShowSlider: true
+        }
+    }
     render() {
         return (
             <div className="Layouts">
@@ -23,9 +29,12 @@ class Layouts extends React.Component<any, any> {
                         <Content style={{ padding: '0 24px 0 0', minHeight: 280 }}>
                             {this.props.children}
                         </Content>
-                        <Sider width={350} style={{ background: '#fff' }}>
-                            <SiderRight />
-                        </Sider>
+                        {
+                            this.state.isShowSlider ?
+                                <Sider width={350} style={{ background: '#fff' }}>
+                                    <SiderRight />
+                                </Sider> : null
+                        }
                     </Layout>
                 </Layout>
                 <GlobalFooter copyright={copyright} />

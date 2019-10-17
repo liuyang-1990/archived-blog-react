@@ -1,26 +1,36 @@
 import React from 'react';
 import { Avatar, Divider } from 'antd';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import ArticleState from '../../states/article.state';
+import { TYPES } from '../../utils/types';
+import { myContainer } from '../../config/inversify.config';
 import './style.less';
 
-
+@observer
 class SiderRight extends React.Component<any, any>{
+
+    private store: ArticleState = myContainer.get<ArticleState>(TYPES.ArticleState);
+
+    componentDidMount() {
+        this.store.queryAllTags();
+    }
 
     render() {
 
-        const list =
-            <Link
+        const list = this.store.tags.map(item =>
+            (<Link
                 className="item"
-                key="id"
+                key={item.Id}
                 to={'/'}
             >
-                <span >数据结构与算法</span>
-            </Link>
-            ;
+                <span key={item.Id}>{item.TagName}</span>
+            </Link>)
+        );
 
         return (
             <div className="right">
-                <Avatar className="right-logo" src={"https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"} size={130} icon="user" />
+                <Avatar className="right-logo" src={"https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"} size={130} icon="user" />
                 <div className="title">liuyang's blog</div>
                 <Divider />
                 <div className="tags">
