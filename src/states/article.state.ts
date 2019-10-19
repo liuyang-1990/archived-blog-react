@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { getAllTags, queryArticlesByPage } from "../services/article.service";
+import { getAllTags, queryArticlesByPage, queryArticleDetail } from "../services/article.service";
 import { injectable } from "inversify";
 import "reflect-metadata";
 import { GridParams, ArticleInfo, JsonResultModel } from "../models/GridParams";
@@ -26,6 +26,14 @@ export default class ArticleState {
         const response = await queryArticlesByPage(params);
         if (response && response.data) {
             this.articleList = response.data;
+        }
+    }
+
+    @action.bound
+    async queryArticleDetail(id: number) {
+        const { data } = await queryArticleDetail(id);
+        if(data){
+            console.log(data);
         }
     }
 

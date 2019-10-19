@@ -1,14 +1,22 @@
 import React from 'react';
 import { Avatar, Icon, Button } from 'antd';
 import { observer } from 'mobx-react';
+import ArticleState from '../../states/article.state';
+import { myContainer } from '../../config/inversify.config';
+import { TYPES } from '../../utils/types';
 import './style.less';
 import './marked.css';
 
 @observer
 class ArticleDetail extends React.Component<any, any>{
 
+    private store: ArticleState = myContainer.get<ArticleState>(TYPES.ArticleState);
+
+    componentDidMount() {
+        this.store.queryArticleDetail(this.props.match.params.id);
+    }
+
     render() {
-        //console.log(this.props.match.params.id);
         return (
             <div className="article clearfix">
                 <div className="detail fl" style={{ width: '75%' }}>

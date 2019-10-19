@@ -1,6 +1,7 @@
 export interface GridParams {
     PageNum: number;
     PageSize: number;
+    Status?: number;
 }
 
 export interface ArticleInfo {

@@ -13,14 +13,15 @@ const copyright =
 
 
 class Layouts extends React.Component<any, any> {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            isShowSlider: true
-        }
-    }
+    
     render() {
+        let isShowSlider = true;
+        let pathName: string = this.props.location.pathname;
+        if (
+            pathName.indexOf("detail") > -1
+        ) {
+            isShowSlider = false;
+        }
         return (
             <div className="Layouts">
                 <GlobalHeader />
@@ -30,7 +31,7 @@ class Layouts extends React.Component<any, any> {
                             {this.props.children}
                         </Content>
                         {
-                            this.state.isShowSlider ?
+                            isShowSlider ?
                                 <Sider width={350} style={{ background: '#fff' }}>
                                     <SiderRight />
                                 </Sider> : null

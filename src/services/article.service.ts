@@ -7,5 +7,11 @@ export async function getAllTags() {
 
 
 export async function queryArticlesByPage(params: GridParams) {
-    return request("article/page", { params: params });
+    const parms = { ...params, Status: 1 };
+    return request("article/page", { params: parms });
+}
+
+
+export async function queryArticleDetail(id: number) {
+    return request(`article/${id}`);
 }
